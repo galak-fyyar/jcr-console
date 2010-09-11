@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.sokolenko.jcr-console</groupId>
+    <artifactId>webapp</artifactId>
+
+    <parent>
+        <groupId>com.sokolenko.jcr-console</groupId>
+        <artifactId>jcr-console</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <packaging>war</packaging>
+
+    <properties>
+        <prepared.gwt.resources.directory>
+            ${project.build.directory}/prepared-gwt-resources
+        </prepared.gwt.resources.directory>
+        <generated.gwt.resources.directory>
+            ${project.build.directory}/generated-sources/gwt
+        </generated.gwt.resources.directory>
+
+        <gwt.compilation.style>OBFUSCATED</gwt.compilation.style>
+    </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>${prepared.gwt.resources.directory}</directory>
+            </resource>
+
+            <resource>
+                <directory>${project.build.directory}/.generated</directory>
+            </resource>
+
+            <resource>
+                <directory>${basedir}/src/main/gwt-resources</directory>
+                <targetPath>${prepared.gwt.resources.directory}</targetPath>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/gwt-resources</directory>
+                <targetPath>${prepared.gwt.resources.directory}</targetPath>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/*.properties</exclude>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
+                <directory>${generated.gwt.resources.directory}</directory>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>gwt-maven-plugin</artifactId>
+                <configuration>
+                    <logLevel>INFO</logLevel>
+                    <generateDirectory>${generated.gwt.resources.directory}</generateDirectory>
+
+                    <module>com.icomasoft.isdesk.ui.IsDesk</module>
+
+                    <runTarget>index.html</runTarget>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>debug ui</id>
+                        <goals>
+                            <goal>debug</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${basedir}/src/main/webapp</directory>
+                            <filtering>true</filtering>
+                        </resource>
+
+                        <resource>
+                            <directory>${prepared.gwt.resources.directory}</directory>
+                            <excludes>
+                                <exclude>**/*</exclude>
+                            </excludes>
+                        </resource>
+                    </webResources>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-user</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-servlet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.extjs</groupId>
+            <artifactId>gxt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.customware.gwt.presenter</groupId>
+            <artifactId>gwt-presenter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gwt-log</groupId>
+            <artifactId>gwt-log</artifactId>
+        </dependency>
+    </dependencies>
+</project>

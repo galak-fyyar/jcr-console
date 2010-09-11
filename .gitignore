@@ -2,6 +2,7 @@
 *.ipr
 *.iws
 .idea
+.idea/*.xml
 classes
 build
 .classpath
