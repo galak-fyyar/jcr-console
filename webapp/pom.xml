@@ -86,7 +86,7 @@
                     <logLevel>INFO</logLevel>
                     <generateDirectory>${generated.gwt.resources.directory}</generateDirectory>
 
-                    <module>com.icomasoft.isdesk.ui.IsDesk</module>
+                    <module>com.sokolenko.jcrconsole.JcrConsole</module>
 
                     <runTarget>index.html</runTarget>
                 </configuration>
@@ -177,8 +177,32 @@
             <artifactId>gwt-presenter</artifactId>
         </dependency>
         <dependency>
+            <groupId>net.customware.gwt.dispatch</groupId>
+            <artifactId>gwt-dispatch</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.code.gwt-log</groupId>
             <artifactId>gwt-log</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.jcr</groupId>
+            <artifactId>jcr</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.jackrabbit</groupId>
+            <artifactId>jackrabbit-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springmodules</groupId>
+            <artifactId>spring-modules-jcr</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
         </dependency>
     </dependencies>
 </project>
