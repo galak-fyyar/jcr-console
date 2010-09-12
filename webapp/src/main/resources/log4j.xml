@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+    <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="conversionPattern" value="%d{HH:mm:ss,SSS} %-5p [%t:%c{1}] - %m . (%C{2}.%M():%L)%n"/>
+        </layout>
+    </appender>
+
+    <appender name="debugRollingFileAppender" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="${catalina.home}/logs/jcr-console-debug.log"/>
+        <param name="Append" value="true"/>
+        <param name="MaxFileSize" value="10MB"/>
+        <param name="MaxBackupIndex" value="4"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="conversionPattern"
+                   value="%d{dd.MM.yyyy HH:mm:ss,SSS} %-5p [%t:%c{1}] - %m . (%C{2}.%M():%L)%n"/>
+        </layout>
+        <filter class="org.apache.log4j.filter.LevelRangeFilter">
+            <param name="LevelMin" value="DEBUG"/>
+            <param name="LevelMax" value="FATAL"/>
+        </filter>
+    </appender>
+
+    <appender name="errorRollingFileAppender" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="${catalina.home}/logs/jcr-console-error.log"/>
+        <param name="Append" value="true"/>
+        <param name="MaxFileSize" value="10MB"/>
+        <param name="MaxBackupIndex" value="4"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="conversionPattern"
+                   value="%d{dd.MM.yyyy HH:mm:ss,SSS} %-5p [%t:%c{1}] - %m . (%C{2}.%M():%L)%n"/>
+        </layout>
+        <filter class="org.apache.log4j.filter.LevelRangeFilter">
+            <param name="LevelMin" value="WARN"/>
+            <param name="LevelMax" value="FATAL"/>
+        </filter>
+    </appender>
+
+    <root>
+        <priority value="DEBUG"/>
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="debugRollingFileAppender"/>
+        <appender-ref ref="errorRollingFileAppender"/>
+    </root>
+</log4j:configuration>

@@ -5,10 +5,13 @@ import net.customware.gwt.dispatch.shared.Result;
 /**
  * @author Anatoliy Sokolenko
  */
-public class GroovyScriptResult implements Result {
+public class ScriptExecuteResult implements Result {
     private String result;
 
-    public GroovyScriptResult( String result ) {
+    public ScriptExecuteResult() {
+    }
+
+    public ScriptExecuteResult( String result ) {
         this.result = result;
     }
 

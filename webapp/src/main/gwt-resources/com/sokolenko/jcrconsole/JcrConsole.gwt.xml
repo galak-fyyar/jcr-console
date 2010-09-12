@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.0.0//EN"
         "http://google-web-toolkit.googlecode.com/svn/tags/2.0.0/distro-source/core/src/gwt-module.dtd">
-<module rename-to="dynatable">
+<module rename-to="ui">
     <inherits name="com.google.gwt.user.User"/>
+    <inherits name="com.google.gwt.i18n.I18N"/>
     <inherits name="com.google.gwt.rpc.RPC"/>
 
     <inherits name="com.extjs.gxt.ui.GXT"/>
+    <inherits name="com.google.gwt.inject.Inject"/>
     <inherits name="net.customware.gwt.presenter.Presenter"/>
     <inherits name="net.customware.gwt.dispatch.Dispatch"/>
+    <inherits name="com.allen_sauer.gwt.log.gwt-log-OFF"/>
+
+    <!-- Logger configuration -->
+    <extend-property name="log_level" values="${gwt.log.level}"/>
+    <set-property name="log_level" value="${gwt.log.level}"/>
+
+    <set-property name="log_ConsoleLogger" value="ENABLED"/>
+    <set-property name="log_DivLogger" value="DISABLED"/>
+    <set-property name="log_FirebugLogger" value="ENABLED"/>
+    <set-property name="log_GWTLogger" value="ENABLED"/>
+    <set-property name="log_SystemLogger" value="ENABLED"/>
+
+    <entry-point class="com.sokolenko.jcrconsole.client.JcrConsoleEntryPoint"/>
 
     <source path="client"/>
     <source path="shared"/>

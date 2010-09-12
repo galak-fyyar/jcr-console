@@ -13,6 +13,8 @@
 
     <packaging>war</packaging>
 
+    <name>JCR Console - Webapp</name>
+
     <properties>
         <prepared.gwt.resources.directory>
             ${project.build.directory}/prepared-gwt-resources

@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
  * @author Anatoliy Sokolenko
  */
 @Component
-@Scope( "request" )
 public class GetNodeDataActionHandler extends JcrActionHandler<GetNodeDataAction, GetNodeDataResult> {
     protected static final Class<GetNodeDataAction> ACTION_CLASS = GetNodeDataAction.class;
 

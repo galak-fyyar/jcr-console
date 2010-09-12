@@ -5,10 +5,13 @@ import net.customware.gwt.dispatch.shared.Action;
 /**
  * @author Anatoliy Sokolenko
  */
-public class GroovyScriptAction implements Action<GroovyScriptResult> {
+public class ScriptExecuteAction implements Action<ScriptExecuteResult> {
     private String script;
 
-    public GroovyScriptAction( String script ) {
+    public ScriptExecuteAction() {
+    }
+
+    public ScriptExecuteAction( String script ) {
         this.script = script;
     }
 

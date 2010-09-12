@@ -1,7 +1,7 @@
 package com.sokolenko.jcrconsole.server.handlers;
 
-import com.sokolenko.jcrconsole.shared.protocol.GroovyScriptAction;
-import com.sokolenko.jcrconsole.shared.protocol.GroovyScriptResult;
+import com.sokolenko.jcrconsole.shared.protocol.ScriptExecuteAction;
+import com.sokolenko.jcrconsole.shared.protocol.ScriptExecuteResult;
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyRuntimeException;
@@ -9,6 +9,7 @@ import groovy.lang.Script;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.stereotype.Component;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -16,16 +17,17 @@ import java.io.StringWriter;
 /**
  * @author Anatoliy Sokolenko
  */
-public class GroovyScriptActionHandler extends JcrActionHandler<GroovyScriptAction, GroovyScriptResult> {
-    protected static final Class<GroovyScriptAction> ACTION_CLASS = GroovyScriptAction.class;
+@Component
+public class GroovyScriptActionHandler extends JcrActionHandler<ScriptExecuteAction, ScriptExecuteResult> {
+    protected static final Class<ScriptExecuteAction> ACTION_CLASS = ScriptExecuteAction.class;
 
     @Override
-    public Class<GroovyScriptAction> getActionType() {
+    public Class<ScriptExecuteAction> getActionType() {
         return ACTION_CLASS;
     }
 
     @Override
-    public GroovyScriptResult execute( GroovyScriptAction action, ExecutionContext context ) throws DispatchException {
+    public ScriptExecuteResult execute( ScriptExecuteAction action, ExecutionContext context ) throws DispatchException {
         String scriptText = action.getScript();
         scriptText = preprocessScript( scriptText );
 
@@ -57,11 +59,11 @@ public class GroovyScriptActionHandler extends JcrActionHandler<GroovyScriptActi
 
         String scriptResultText = parseScriptResult( result );
 
-        return new GroovyScriptResult( scriptResultText );
+        return new ScriptExecuteResult( scriptResultText );
     }
 
     @Override
-    public void rollback( GroovyScriptAction action, GroovyScriptResult result, ExecutionContext context ) throws DispatchException {
+    public void rollback( ScriptExecuteAction action, ScriptExecuteResult result, ExecutionContext context ) throws DispatchException {
 
     }
 

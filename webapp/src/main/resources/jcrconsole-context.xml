@@ -6,24 +6,26 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-            http://www.springframework.org/schema/context http://www.springframework.org/schema/beans/spring-context.xsd
-            http://www.springframework.org/schema/util http://www.springframework.org/schema/beans/spring-util.xsd
-            http://www.springframework.org/schema/lang http://www.springframework.org/schema/beans/spring-lang.xsd">
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+            http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd">
 
     <ctx:annotation-config/>
 
     <ctx:component-scan base-package="com.sokolenko.jcrconsole.server"/>
 
-    <util:properties location="classpath:jcrconsole.properties"/>
+    <util:properties id="jcrConsoleProperties" location="classpath:jcrconsole.properties"/>
 
     <util:set id="actionHandlers">
         <ref bean="getNodeDataActionHandler"/>
+        <ref bean="groovyScriptActionHandler"/>
     </util:set>
 
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="alwaysUseFullPath" value="true"/>
         <property name="mappings">
             <value>
-                /dispatch=gwtDispatchServlet
+                /gwt-rpc/dispatch=standardDispatchServlet
             </value>
         </property>
     </bean>
@@ -35,6 +37,7 @@
     <bean id="gwtDispatch" class="net.customware.gwt.dispatch.server.spring.SpringDispatch"/>
 
     <bean class="org.springmodules.jcr.jackrabbit.RepositoryFactoryBean">
-        <property name="configuration" value="classpath:jackrabbit-repository.xml"/>
+        <property name="configuration" value="/WEB-INF/repository/repository.xml"/>
+        <property name="homeDir" value="/WEB-INF/repository"/>
     </bean>
 </beans>

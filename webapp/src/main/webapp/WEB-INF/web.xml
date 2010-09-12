@@ -7,6 +7,14 @@
     <display-name>JCR Console</display-name>
     <distributable/>
 
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+
     <servlet>
         <servlet-name>main dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -18,7 +26,7 @@
 
     <servlet-mapping>
         <servlet-name>main dispatcher</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/gwt-rpc/*</url-pattern>
     </servlet-mapping>
 
     <session-config>
