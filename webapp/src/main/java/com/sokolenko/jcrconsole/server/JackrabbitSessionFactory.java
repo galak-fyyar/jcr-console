@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.jcr.Credentials;
-import javax.jcr.Repository;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 
@@ -21,16 +20,16 @@ public class JackrabbitSessionFactory implements FactoryBean<Session> {
     protected static final Credentials CREDENTIALS = new SimpleCredentials( "admin", "".toCharArray() );
 
     @Autowired
-    private Repository repository;
+    private JackrabbitSessionData sessionData;
 
     @Autowired
-    private JackrabbitSessionData sessionData;
+    private JackrabbitRepositoryHolder jackrabbitRepositoryHolder;
 
     @Override
     public Session getObject() throws Exception {
         String workspaceName = sessionData.getWorkspaceName();
         if ( workspaceName == null ) {
-            Session tmpSession = repository.login( CREDENTIALS );
+            Session tmpSession = jackrabbitRepositoryHolder.getRepository().login( CREDENTIALS );
 
             workspaceName = RandomStringUtils.randomAlphabetic( 15 );
             if ( StringUtils.isNotBlank( sessionData.getSampleWorkspace() ) ) {
@@ -42,7 +41,7 @@ public class JackrabbitSessionFactory implements FactoryBean<Session> {
 
         sessionData.setWorkspaceName( workspaceName );
 
-        return repository.login( CREDENTIALS, workspaceName );
+        return jackrabbitRepositoryHolder.getRepository().login( CREDENTIALS, workspaceName );
     }
 
     @Override

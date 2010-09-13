@@ -154,7 +154,12 @@ public abstract class DataLoadingPresenter<D extends WidgetDisplay> extends Widg
 
         @Override
         public boolean equals( Object obj ) {
-            return action == obj;
+            if ( obj instanceof ActionKey ) {
+                return action == ( ( ActionKey ) obj ).action;
+            } else {
+                return false;
+            }
+
         }
     }
 }
