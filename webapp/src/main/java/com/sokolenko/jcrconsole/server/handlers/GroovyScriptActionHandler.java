@@ -18,7 +18,7 @@ import java.io.StringWriter;
  * @author Anatoliy Sokolenko
  */
 @Component
-public class GroovyScriptActionHandler extends JcrActionHandler<ScriptExecuteAction, ScriptExecuteResult> {
+public class GroovyScriptActionHandler extends AbstractJcrActionHandler<ScriptExecuteAction, ScriptExecuteResult> {
     public GroovyScriptActionHandler() {
         super( ScriptExecuteAction.class );
     }

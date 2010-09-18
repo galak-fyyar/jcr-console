@@ -6,7 +6,6 @@ import com.sokolenko.jcrconsole.shared.protocol.NodeInfo;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.ActionException;
 import net.customware.gwt.dispatch.shared.DispatchException;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.jcr.Node;
@@ -19,7 +18,7 @@ import java.util.List;
  * @author Anatoliy Sokolenko
  */
 @Component
-public class GetNodesActionHandler extends JcrActionHandler<GetNodesAction, GetNodesResult> {
+public class GetNodesActionHandler extends AbstractJcrActionHandler<GetNodesAction, GetNodesResult> {
     public GetNodesActionHandler() {
         super( GetNodesAction.class );
     }

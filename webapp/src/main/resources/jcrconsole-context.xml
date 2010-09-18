@@ -3,20 +3,24 @@
        xmlns:ctx="http://www.springframework.org/schema/context"
        xmlns:util="http://www.springframework.org/schema/util"
        xmlns:lang="http://www.springframework.org/schema/lang"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
             http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-            http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd">
+            http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+
+       default-lazy-init="true">
 
     <ctx:annotation-config/>
 
-    <ctx:component-scan base-package="com.sokolenko.jcrconsole.server"/>
+    <ctx:component-scan base-package="com.sokolenko.jcrconsole.server" scoped-proxy="targetClass"/>
 
     <util:properties id="jcrConsoleProperties" location="classpath:jcrconsole.properties"/>
 
-    <util:set id="actionHandlers" scope="request">
+    <util:set id="actionHandlers">
         <ref bean="getNodesActionHandler"/>
         <ref bean="getNodeDataActionHandler"/>
         <ref bean="groovyScriptActionHandler"/>
