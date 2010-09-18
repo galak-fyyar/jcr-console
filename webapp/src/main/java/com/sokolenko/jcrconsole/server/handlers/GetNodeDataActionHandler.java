@@ -2,7 +2,6 @@ package com.sokolenko.jcrconsole.server.handlers;
 
 import com.sokolenko.jcrconsole.shared.protocol.GetNodeDataAction;
 import com.sokolenko.jcrconsole.shared.protocol.GetNodeDataResult;
-import net.customware.gwt.dispatch.server.ActionHandler;
 import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.DispatchException;
 import org.springframework.context.annotation.Scope;
@@ -13,11 +12,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class GetNodeDataActionHandler extends JcrActionHandler<GetNodeDataAction, GetNodeDataResult> {
-    protected static final Class<GetNodeDataAction> ACTION_CLASS = GetNodeDataAction.class;
-
-    @Override
-    public Class<GetNodeDataAction> getActionType() {
-        return ACTION_CLASS;
+    public GetNodeDataActionHandler() {
+        super( GetNodeDataAction.class );
     }
 
     @Override

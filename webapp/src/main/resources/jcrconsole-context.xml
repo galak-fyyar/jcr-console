@@ -16,7 +16,8 @@
 
     <util:properties id="jcrConsoleProperties" location="classpath:jcrconsole.properties"/>
 
-    <util:set id="actionHandlers">
+    <util:set id="actionHandlers" scope="request">
+        <ref bean="getNodesActionHandler"/>
         <ref bean="getNodeDataActionHandler"/>
         <ref bean="groovyScriptActionHandler"/>
     </util:set>

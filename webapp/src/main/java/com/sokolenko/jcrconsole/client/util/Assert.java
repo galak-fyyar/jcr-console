@@ -13,6 +13,12 @@ public abstract class Assert {
         }
     }
 
+    public static void notNullState( Object o, String field ) {
+        if ( o == null ) {
+            throw new IllegalStateException( "Field " + field + " should be specified" );
+        }
+    }
+
     public static void hasText( String text, String parameter ) {
         if ( StringUtils.isEmpty( text ) ) {
             throw new IllegalArgumentException( "Attribute " + parameter + " should be specified" );

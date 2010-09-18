@@ -5,7 +5,7 @@ import net.customware.gwt.dispatch.shared.Action;
 import net.customware.gwt.dispatch.shared.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import javax.jcr.Session;
 
@@ -16,6 +16,19 @@ import javax.jcr.Session;
 public abstract class JcrActionHandler<A extends Action<R>, R extends Result> implements ActionHandler<A, R> {
     @Autowired
     private Session session;
+
+    private Class<A> actionClass;
+
+    protected JcrActionHandler( Class<A> actionClass ) {
+        Assert.notNull( actionClass, "actionClass" );
+
+        this.actionClass = actionClass;
+    }
+
+    @Override
+    public Class<A> getActionType() {
+        return actionClass;
+    }
 
     public Session getSession() {
         return session;

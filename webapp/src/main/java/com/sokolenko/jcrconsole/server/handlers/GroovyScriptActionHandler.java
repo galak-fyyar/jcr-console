@@ -19,11 +19,8 @@ import java.io.StringWriter;
  */
 @Component
 public class GroovyScriptActionHandler extends JcrActionHandler<ScriptExecuteAction, ScriptExecuteResult> {
-    protected static final Class<ScriptExecuteAction> ACTION_CLASS = ScriptExecuteAction.class;
-
-    @Override
-    public Class<ScriptExecuteAction> getActionType() {
-        return ACTION_CLASS;
+    public GroovyScriptActionHandler() {
+        super( ScriptExecuteAction.class );
     }
 
     @Override
@@ -67,7 +64,7 @@ public class GroovyScriptActionHandler extends JcrActionHandler<ScriptExecuteAct
 
     }
 
-    private String preprocessScript( String script ) {
+    protected String preprocessScript( String script ) {
         if ( script == null ) {
             return StringUtils.EMPTY;
         }
@@ -108,9 +105,9 @@ public class GroovyScriptActionHandler extends JcrActionHandler<ScriptExecuteAct
 
         StringBuilder importsBuilder = new StringBuilder();
         importsBuilder.append( "import javax.jcr.*" );
+        importsBuilder.append( "\n" );
 
         return insertString( script, importsBuilder.toString(), importSectionPlace );
-
     }
 
     protected String parseScriptResult( Object o ) {
@@ -132,6 +129,14 @@ public class GroovyScriptActionHandler extends JcrActionHandler<ScriptExecuteAct
     }
 
     protected String insertString( String original, String fragment, int startingFrom ) {
-        return original; //TODO
+        String firstPart = original.substring( 0, startingFrom );
+        String secondPart = original.substring( startingFrom, original.length() );
+
+        StringBuilder builder = new StringBuilder();
+        builder.append( firstPart );
+        builder.append( fragment );
+        builder.append( secondPart );
+
+        return builder.toString();
     }
 }

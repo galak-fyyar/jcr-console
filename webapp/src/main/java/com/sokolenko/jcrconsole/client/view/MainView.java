@@ -1,6 +1,7 @@
 package com.sokolenko.jcrconsole.client.view;
 
 import com.extjs.gxt.ui.client.Style;
+import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
 import com.extjs.gxt.ui.client.widget.Viewport;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
@@ -15,9 +16,8 @@ import com.sokolenko.jcrconsole.client.presenter.MainPresenter;
 @Singleton
 public class MainView extends Viewport implements MainPresenter.Display {
     private Widget leftComponent;
-    private Widget leftCenterComponent;
-    private Widget rightCenterComponent;
-    private Widget bottomComponent;
+    private Widget centerComponent;
+    private Widget rightComponent;
 
     @Override
     public Widget asWidget() {
@@ -42,6 +42,7 @@ public class MainView extends Viewport implements MainPresenter.Display {
 
         if ( leftComponent != null ) {
             layoutData = new BorderLayoutData( Style.LayoutRegion.WEST );
+            layoutData.setMargins( new Margins( 0, 5, 0, 0 ) );
             layoutData.setCollapsible( true );
             layoutData.setSplit( true );
             add( leftComponent, layoutData );
@@ -50,23 +51,18 @@ public class MainView extends Viewport implements MainPresenter.Display {
         LayoutContainer centerContainer = new LayoutContainer();
         centerContainer.setLayout( new BorderLayout() );
 
-        if ( leftCenterComponent != null ) {
+        if ( centerComponent != null ) {
             layoutData = new BorderLayoutData( Style.LayoutRegion.WEST );
-            centerContainer.add( leftCenterComponent, layoutData );
+            layoutData.setMargins( new Margins( 0 ) );
+            centerContainer.add( centerComponent, layoutData );
         }
 
-        if ( rightCenterComponent != null ) {
+        if ( rightComponent != null ) {
             layoutData = new BorderLayoutData( Style.LayoutRegion.EAST );
+            layoutData.setMargins( new Margins( 0, 0, 0, 5 ) );
             layoutData.setCollapsible( true );
             layoutData.setSplit( true );
-            centerContainer.add( rightCenterComponent, layoutData );
-        }
-
-        if ( bottomComponent != null ) {
-            layoutData = new BorderLayoutData( Style.LayoutRegion.SOUTH );
-            layoutData.setCollapsible( true );
-            layoutData.setSplit( true );
-            centerContainer.add( bottomComponent, layoutData );
+            centerContainer.add( rightComponent, layoutData );
         }
 
         if ( centerContainer.getItemCount() > 0 ) {
@@ -85,32 +81,22 @@ public class MainView extends Viewport implements MainPresenter.Display {
     }
 
     @Override
-    public Widget getLeftCenterComponent() {
-        return leftCenterComponent;
+    public Widget getCenterComponent() {
+        return centerComponent;
     }
 
     @Override
-    public void setLeftCenterComponent( Widget leftCenterComponent ) {
-        this.leftCenterComponent = leftCenterComponent;
+    public void setCenterComponent( Widget centerComponent ) {
+        this.centerComponent = centerComponent;
     }
 
     @Override
-    public Widget getRightCenterComponent() {
-        return rightCenterComponent;
+    public Widget getRightComponent() {
+        return rightComponent;
     }
 
     @Override
-    public void setRightCenterComponent( Widget rightCenterComponent ) {
-        this.rightCenterComponent = rightCenterComponent;
-    }
-
-    @Override
-    public Widget getBottomComponent() {
-        return bottomComponent;
-    }
-
-    @Override
-    public void setBottomComponent( Widget bottomComponent ) {
-        this.bottomComponent = bottomComponent;
+    public void setRightComponent( Widget rightComponent ) {
+        this.rightComponent = rightComponent;
     }
 }

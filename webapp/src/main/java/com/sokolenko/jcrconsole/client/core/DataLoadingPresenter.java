@@ -2,7 +2,7 @@ package com.sokolenko.jcrconsole.client.core;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sokolenko.jcrconsole.client.util.Assert;
-import net.customware.gwt.dispatch.client.standard.StandardDispatchServiceAsync;
+import net.customware.gwt.dispatch.client.DispatchAsync;
 import net.customware.gwt.dispatch.shared.Action;
 import net.customware.gwt.dispatch.shared.Result;
 import net.customware.gwt.presenter.client.EventBus;
@@ -16,11 +16,11 @@ import java.util.Map;
  * @author Anatoliy Sokolenko
  */
 public abstract class DataLoadingPresenter<D extends WidgetDisplay> extends WidgetPresenter<D> {
-    private final StandardDispatchServiceAsync dispatchAsync;
+    private final DispatchAsync dispatchAsync;
 
     private final Map<ActionKey, CheckingResultHandler> waitingActions = new HashMap<ActionKey, CheckingResultHandler>();
 
-    public DataLoadingPresenter( D display, EventBus eventBus, StandardDispatchServiceAsync dispatchAsync ) {
+    public DataLoadingPresenter( D display, EventBus eventBus, DispatchAsync dispatchAsync ) {
         super( display, eventBus );
 
         this.dispatchAsync = dispatchAsync;
@@ -148,18 +148,21 @@ public abstract class DataLoadingPresenter<D extends WidgetDisplay> extends Widg
         }
 
         @Override
-        public int hashCode() {
-            return action.hashCode();
+        @SuppressWarnings( { "unchecked" } )
+        public boolean equals( Object o ) {
+            if ( this == o ) return true;
+            if ( o == null || getClass() != o.getClass() ) return false;
+
+            ActionKey actionKey = ( ActionKey ) o;
+
+            if ( !action.equals( actionKey.action ) ) return false;
+
+            return true;
         }
 
         @Override
-        public boolean equals( Object obj ) {
-            if ( obj instanceof ActionKey ) {
-                return action == ( ( ActionKey ) obj ).action;
-            } else {
-                return false;
-            }
-
+        public int hashCode() {
+            return action.hashCode();
         }
     }
 }

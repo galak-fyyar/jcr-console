@@ -12,7 +12,7 @@ import com.sokolenko.jcrconsole.client.event.ExecuteScriptEvent;
 import com.sokolenko.jcrconsole.client.util.StringUtils;
 import com.sokolenko.jcrconsole.shared.protocol.ScriptExecuteAction;
 import com.sokolenko.jcrconsole.shared.protocol.ScriptExecuteResult;
-import net.customware.gwt.dispatch.client.standard.StandardDispatchServiceAsync;
+import net.customware.gwt.dispatch.client.DispatchAsync;
 import net.customware.gwt.presenter.client.EventBus;
 import net.customware.gwt.presenter.client.place.Place;
 import net.customware.gwt.presenter.client.place.PlaceRequest;
@@ -27,7 +27,7 @@ public class ScriptConsolePresenter extends DataLoadingPresenter<ScriptConsolePr
     protected static final String SCRIPT_EXECUTE_SPACE = StringUtils.random( 10 );
 
     @Inject
-    public ScriptConsolePresenter( Display display, EventBus eventBus, StandardDispatchServiceAsync dispatchAsync ) {
+    public ScriptConsolePresenter( Display display, EventBus eventBus, DispatchAsync dispatchAsync ) {
         super( display, eventBus, dispatchAsync );
 
         bind();
@@ -42,7 +42,7 @@ public class ScriptConsolePresenter extends DataLoadingPresenter<ScriptConsolePr
         send( actionWrapper, new AsyncCallback<ScriptExecuteResult>() {
             @Override
             public void onSuccess( ScriptExecuteResult scriptExecuteResult ) {
-                //TODO
+                getDisplay().setOutputText( scriptExecuteResult.getResult() );
             }
 
             @Override
@@ -60,33 +60,37 @@ public class ScriptConsolePresenter extends DataLoadingPresenter<ScriptConsolePr
 
     @Override
     protected void onUnbind() {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
     public Place getPlace() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return null;
     }
 
     @Override
     protected void onPlaceRequest( PlaceRequest placeRequest ) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
     public void refreshDisplay() {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     @Override
     public void revealDisplay() {
-        //To change body of implemented methods use File | Settings | File Templates.
+
     }
 
     public static interface Display extends WidgetDisplay {
         void setScriptText( String scriptText );
 
         String getScriptText();
+
+        void setOutputText( String text );
+
+        String getOutputText();
 
         Observable getViewObservable();
     }

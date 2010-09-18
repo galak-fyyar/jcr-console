@@ -1,6 +1,5 @@
 package com.sokolenko.jcrconsole.client.presenter;
 
-import com.extjs.gxt.ui.client.event.Observable;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -15,12 +14,16 @@ import net.customware.gwt.presenter.client.widget.WidgetPresenter;
  */
 @Singleton
 public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
+    private NodesTreePresenter nodesTreePresenter;
+
     private ScriptConsolePresenter scriptConsolePresenter;
 
     @Inject
-    public MainPresenter( Display display, EventBus eventBus, ScriptConsolePresenter scriptConsolePresenter ) {
+    public MainPresenter( Display display, EventBus eventBus, NodesTreePresenter nodesTreePresenter,
+                          ScriptConsolePresenter scriptConsolePresenter ) {
         super( display, eventBus );
 
+        this.nodesTreePresenter = nodesTreePresenter;
         this.scriptConsolePresenter = scriptConsolePresenter;
 
         bind();
@@ -28,7 +31,8 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
 
     @Override
     protected void onBind() {
-        getDisplay().setRightCenterComponent( scriptConsolePresenter.getDisplay().asWidget() );
+        getDisplay().setLeftComponent( nodesTreePresenter.getDisplay().asWidget() );
+        getDisplay().setRightComponent( scriptConsolePresenter.getDisplay().asWidget() );
 
         getDisplay().initLayout();
     }
@@ -65,16 +69,12 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
 
         void setLeftComponent( Widget leftComponent );
 
-        Widget getLeftCenterComponent();
+        Widget getCenterComponent();
 
-        void setLeftCenterComponent( Widget leftCenterComponent );
+        void setCenterComponent( Widget leftCenterComponent );
 
-        Widget getRightCenterComponent();
+        Widget getRightComponent();
 
-        void setRightCenterComponent( Widget rightCenterComponent );
-
-        Widget getBottomComponent();
-
-        void setBottomComponent( Widget bottomComponent );
+        void setRightComponent( Widget rightCenterComponent );
     }
 }
