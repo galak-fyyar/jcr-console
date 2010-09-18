@@ -10,15 +10,31 @@ public class NodeIntoTreeLabelProvider implements ModelStringProvider<NodeInfoTr
     public String getStringValue( NodeInfoTreeModel model, String property ) {
         StringBuilder labelBuilder = new StringBuilder();
         labelBuilder.append( "<span>" );
-        labelBuilder.append( model.get( NodeInfoTreeModel.NODE_NAME ) );
 
-        labelBuilder.append( " " );
+        if ( model instanceof NodesBucketTreeModel ) {
+            NodesBucketTreeModel nodesBucketTreeModel = ( NodesBucketTreeModel ) model;
 
-        labelBuilder.append( "<span style='color: gray'>" );
-        labelBuilder.append( "&lt;" );
-        labelBuilder.append( model.get( NodeInfoTreeModel.NODE_TYPE_NAME ) );
-        labelBuilder.append( "&gt;" );
-        labelBuilder.append( "</span>" );
+            long bucketStart = ( Long ) nodesBucketTreeModel.get( NodesBucketTreeModel.BUCKET_START );
+            long bucketLength = ( Long ) nodesBucketTreeModel.get( NodesBucketTreeModel.BUCKET_LENGTH );
+
+            long bucketEnd = bucketStart + bucketLength - 1;
+
+            labelBuilder.append( "children" );
+            labelBuilder.append( " " );
+            labelBuilder.append( bucketStart );
+            labelBuilder.append( " \u2014 " );
+            labelBuilder.append( bucketEnd );
+        } else {
+            labelBuilder.append( model.get( NodeInfoTreeModel.NODE_NAME ) );
+
+            labelBuilder.append( " " );
+
+            labelBuilder.append( "<span style='color: gray'>" );
+            labelBuilder.append( "&lt;" );
+            labelBuilder.append( model.get( NodeInfoTreeModel.NODE_TYPE_NAME ) );
+            labelBuilder.append( "&gt;" );
+            labelBuilder.append( "</span>" );
+        }
 
         labelBuilder.append( "</span>" );
 

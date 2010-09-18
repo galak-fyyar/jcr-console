@@ -126,6 +126,21 @@ public class NodesTreePresenter extends WidgetPresenter<NodesTreePresenter.Displ
         }
 
         @Override
+        protected void loadData( Object config ) {
+            if ( config instanceof NodeInfoTreeModel ) {
+                NodeInfoTreeModel nodeInfoTreeModel = ( NodeInfoTreeModel ) config;
+                List children = nodeInfoTreeModel.getChildren();
+
+                if ( children.size() > 0 ) {
+                    onLoadSuccess( config, children );
+                    return;
+                }
+            }
+
+            super.loadData( config );
+        }
+
+        @Override
         public boolean hasChildren( NodeInfoTreeModel parent ) {
             long totalChildrenCount = ( Long ) parent.get( NodeInfoTreeModel.TOTAL_CHILDREN_COUNT );
 
@@ -146,8 +161,8 @@ public class NodesTreePresenter extends WidgetPresenter<NodesTreePresenter.Displ
                 if ( loadConfig instanceof NodesBucketTreeModel ) {
                     NodesBucketTreeModel nodesBucketTreeModel = ( NodesBucketTreeModel ) loadConfig;
 
-                    long bunchLength = ( Long ) nodesBucketTreeModel.get( NodesBucketTreeModel.BUNCH_LENGTH );
-                    long bunchStart = ( Long ) nodesBucketTreeModel.get( NodesBucketTreeModel.BUNCH_START );
+                    long bunchLength = ( Long ) nodesBucketTreeModel.get( NodesBucketTreeModel.BUCKET_LENGTH );
+                    long bunchStart = ( Long ) nodesBucketTreeModel.get( NodesBucketTreeModel.BUCKET_START );
 
                     getNodeTreeAction.setBucketStart( bunchStart );
                     getNodeTreeAction.setBucketLength( bunchLength );
