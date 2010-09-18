@@ -66,7 +66,7 @@ public class NodesTreeView extends ContentPanel implements NodesTreePresenter.Di
 
         AbstractImagePrototype refreshIcon = AbstractImagePrototype.create( viewResources.refreshIcon() );
 
-        Button refreshButton = new Button( "Refresh" );
+        Button refreshButton = new Button();
         refreshButton.setIcon( refreshIcon );
         refreshButton.addSelectionListener( new RefreshButtonListener() );
         toolBar.add( refreshButton );
@@ -82,6 +82,7 @@ public class NodesTreeView extends ContentPanel implements NodesTreePresenter.Di
         if ( this.store != null ) {
             this.store.getLoader().removeListener( Loader.BeforeLoad, beforeLoadListener );
             this.store.getLoader().removeListener( Loader.Load, afterLoadListener );
+            this.store.getLoader().removeListener( Loader.LoadException, afterLoadListener );
         }
 
         this.store = store;
@@ -89,6 +90,7 @@ public class NodesTreeView extends ContentPanel implements NodesTreePresenter.Di
         if ( this.store != null ) {
             this.store.getLoader().addListener( Loader.BeforeLoad, beforeLoadListener );
             this.store.getLoader().addListener( Loader.Load, afterLoadListener );
+            this.store.getLoader().addListener( Loader.LoadException, afterLoadListener );
         }
     }
 

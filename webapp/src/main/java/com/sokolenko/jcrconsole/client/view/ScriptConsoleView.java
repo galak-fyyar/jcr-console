@@ -7,8 +7,8 @@ import com.extjs.gxt.ui.client.event.Observable;
 import com.extjs.gxt.ui.client.event.SelectionListener;
 import com.extjs.gxt.ui.client.util.Margins;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
+import com.extjs.gxt.ui.client.widget.Html;
 import com.extjs.gxt.ui.client.widget.LayoutContainer;
-import com.extjs.gxt.ui.client.widget.Text;
 import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.form.TextArea;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
@@ -29,7 +29,7 @@ public class ScriptConsoleView extends ContentPanel implements ScriptConsolePres
 
     private final TextArea scriptTextArea;
 
-    private final Text outputText;
+    private final Html outputText;
 
     public ScriptConsoleView() {
         setLayout( new BorderLayout() );
@@ -49,30 +49,32 @@ public class ScriptConsoleView extends ContentPanel implements ScriptConsolePres
 
         setTopComponent( toolBar );
 
-        LayoutContainer textAreaContainer;
         BorderLayoutData layoutData;
 
         scriptTextArea = new TextArea();
         scriptTextArea.setHideLabel( true );
 
-        textAreaContainer = new LayoutContainer( new FitLayout() );
-        textAreaContainer.setHeight( "100%" );
+        LayoutContainer scriptTextAreaContainer = new LayoutContainer( new FitLayout() );
+        scriptTextAreaContainer.setHeight( "100%" );
         layoutData = new BorderLayoutData( Style.LayoutRegion.NORTH );
         layoutData.setMargins( new Margins( 0, 0, 5, 0 ) );
         layoutData.setCollapsible( true );
         layoutData.setSplit( true );
 
-        textAreaContainer.add( scriptTextArea );
-        add( textAreaContainer, layoutData );
+        scriptTextAreaContainer.add( scriptTextArea );
+        add( scriptTextAreaContainer, layoutData );
 
-        outputText = new Text();
+        outputText = new Html();
         outputText.setHeight( "100%" );
-        textAreaContainer = new LayoutContainer( new FitLayout() );
+        ContentPanel outputTextContainer = new ContentPanel( new FitLayout() );
+        outputTextContainer.setHeaderVisible( false );
+        outputTextContainer.setBodyStyle( "padding: 5px;" );
+        outputTextContainer.setScrollMode( Style.Scroll.AUTO );
         layoutData = new BorderLayoutData( Style.LayoutRegion.SOUTH );
         layoutData.setMargins( new Margins( 0, 0, 0, 0 ) );
 
-        textAreaContainer.add( outputText );
-        add( textAreaContainer, layoutData );
+        outputTextContainer.add( outputText );
+        add( outputTextContainer, layoutData );
     }
 
     @Override
@@ -102,12 +104,12 @@ public class ScriptConsoleView extends ContentPanel implements ScriptConsolePres
 
     @Override
     public void setOutputText( String text ) {
-        outputText.setText( text );
+        outputText.setHtml( text );
     }
 
     @Override
     public String getOutputText() {
-        return outputText.getText();
+        return outputText.getHtml();
     }
 
     @Override

@@ -42,7 +42,10 @@ public class ScriptConsolePresenter extends DataLoadingPresenter<ScriptConsolePr
         send( actionWrapper, new AsyncCallback<ScriptExecuteResult>() {
             @Override
             public void onSuccess( ScriptExecuteResult scriptExecuteResult ) {
-                getDisplay().setOutputText( scriptExecuteResult.getResult() );
+                String outputText = scriptExecuteResult.getResult();
+                outputText = outputText.replace( "\n", "<br/>" );
+
+                getDisplay().setOutputText( outputText );
             }
 
             @Override
