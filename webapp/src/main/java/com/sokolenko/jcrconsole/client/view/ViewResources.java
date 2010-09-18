@@ -9,4 +9,7 @@ import com.google.gwt.resources.client.ImageResource;
 public interface ViewResources extends ClientBundle {
     @Source( "assets/refresh.png" )
     ImageResource refreshIcon();
+
+    @Source( "assets/execute.png" )
+    ImageResource executeIcon();
 }
