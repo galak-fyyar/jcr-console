@@ -5,6 +5,8 @@ import com.extjs.gxt.ui.client.event.BaseObservable;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.ComponentEvent;
 import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.FieldEvent;
+import com.extjs.gxt.ui.client.event.KeyListener;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.Observable;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -18,6 +20,7 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -66,6 +69,16 @@ public class ScriptConsoleView extends ContentPanel implements ScriptConsolePres
 
         scriptTextArea = new TextArea();
         scriptTextArea.setHideLabel( true );
+        scriptTextArea.addKeyListener( new KeyListener() {
+            @Override
+            public void componentKeyPress( ComponentEvent event ) {
+                FieldEvent fieldEvent = ( FieldEvent ) event;
+
+                if ( fieldEvent.isControlKey() && fieldEvent.getKeyCode() == KeyCodes.KEY_ENTER ) {
+                    observable.fireEvent( ExecuteScriptEvent.EVENT_TYPE, new ExecuteScriptEvent() );
+                }
+            }
+        } );
         scriptTextArea.addListener( Events.Render, new Listener<ComponentEvent>() {
             @Override
             public void handleEvent( ComponentEvent be ) {
