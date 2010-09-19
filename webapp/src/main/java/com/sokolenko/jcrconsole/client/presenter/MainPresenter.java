@@ -16,14 +16,18 @@ import net.customware.gwt.presenter.client.widget.WidgetPresenter;
 public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
     private NodesTreePresenter nodesTreePresenter;
 
+    private NodeDetailsPresenter nodeDetailsPresenter;
+
     private ScriptConsolePresenter scriptConsolePresenter;
 
     @Inject
     public MainPresenter( Display display, EventBus eventBus, NodesTreePresenter nodesTreePresenter,
+                          NodeDetailsPresenter nodeDetailsPresenter,
                           ScriptConsolePresenter scriptConsolePresenter ) {
         super( display, eventBus );
 
         this.nodesTreePresenter = nodesTreePresenter;
+        this.nodeDetailsPresenter = nodeDetailsPresenter;
         this.scriptConsolePresenter = scriptConsolePresenter;
 
         bind();
@@ -32,6 +36,7 @@ public class MainPresenter extends WidgetPresenter<MainPresenter.Display> {
     @Override
     protected void onBind() {
         getDisplay().setLeftComponent( nodesTreePresenter.getDisplay().asWidget() );
+        getDisplay().setCenterComponent( nodeDetailsPresenter.getDisplay().asWidget() );
         getDisplay().setRightComponent( scriptConsolePresenter.getDisplay().asWidget() );
 
         getDisplay().initLayout();

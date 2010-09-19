@@ -9,9 +9,11 @@ import com.sokolenko.jcrconsole.client.model.NodeInfoTreeModel;
 import com.sokolenko.jcrconsole.client.model.NodeInfoTreeModelIconProvider;
 import com.sokolenko.jcrconsole.client.model.NodeIntoTreeLabelProvider;
 import com.sokolenko.jcrconsole.client.presenter.MainPresenter;
+import com.sokolenko.jcrconsole.client.presenter.NodeDetailsPresenter;
 import com.sokolenko.jcrconsole.client.presenter.NodesTreePresenter;
 import com.sokolenko.jcrconsole.client.presenter.ScriptConsolePresenter;
 import com.sokolenko.jcrconsole.client.view.MainView;
+import com.sokolenko.jcrconsole.client.view.NodeDetailsView;
 import com.sokolenko.jcrconsole.client.view.NodesTreeView;
 import com.sokolenko.jcrconsole.client.view.ScriptConsoleView;
 import net.customware.gwt.presenter.client.DefaultEventBus;
@@ -30,6 +32,7 @@ public class JcrConsoleModule extends AbstractPresenterModule {
 
         bindPresenter( MainPresenter.class, MainPresenter.Display.class, MainView.class );
         bindPresenter( NodesTreePresenter.class, NodesTreePresenter.Display.class, NodesTreeView.class );
+        bindPresenter( NodeDetailsPresenter.class, NodeDetailsPresenter.Display.class, NodeDetailsView.class );
         bindPresenter( ScriptConsolePresenter.class, ScriptConsolePresenter.Display.class, ScriptConsoleView.class );
 
         bind( new TypeLiteral<ModelStringProvider<NodeInfoTreeModel>>() {

@@ -52,7 +52,7 @@ public class MainView extends Viewport implements MainPresenter.Display {
         centerContainer.setLayout( new BorderLayout() );
 
         if ( centerComponent != null ) {
-            layoutData = new BorderLayoutData( Style.LayoutRegion.WEST );
+            layoutData = new BorderLayoutData( Style.LayoutRegion.CENTER );
             layoutData.setMargins( new Margins( 0 ) );
             centerContainer.add( centerComponent, layoutData );
         }
