@@ -1,7 +1,13 @@
 package com.sokolenko.jcrconsole.client;
 
+import com.extjs.gxt.ui.client.data.ModelIconProvider;
+import com.extjs.gxt.ui.client.data.ModelStringProvider;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
+import com.sokolenko.jcrconsole.client.model.NodeInfoTreeModel;
+import com.sokolenko.jcrconsole.client.model.NodeInfoTreeModelIconProvider;
+import com.sokolenko.jcrconsole.client.model.NodeIntoTreeLabelProvider;
 import com.sokolenko.jcrconsole.client.presenter.MainPresenter;
 import com.sokolenko.jcrconsole.client.presenter.NodesTreePresenter;
 import com.sokolenko.jcrconsole.client.presenter.ScriptConsolePresenter;
@@ -25,5 +31,12 @@ public class JcrConsoleModule extends AbstractPresenterModule {
         bindPresenter( MainPresenter.class, MainPresenter.Display.class, MainView.class );
         bindPresenter( NodesTreePresenter.class, NodesTreePresenter.Display.class, NodesTreeView.class );
         bindPresenter( ScriptConsolePresenter.class, ScriptConsolePresenter.Display.class, ScriptConsoleView.class );
+
+        bind( new TypeLiteral<ModelStringProvider<NodeInfoTreeModel>>() {
+        } )
+                .to( NodeIntoTreeLabelProvider.class );
+        bind( new TypeLiteral<ModelIconProvider<NodeInfoTreeModel>>() {
+        } )
+                .to( NodeInfoTreeModelIconProvider.class );
     }
 }

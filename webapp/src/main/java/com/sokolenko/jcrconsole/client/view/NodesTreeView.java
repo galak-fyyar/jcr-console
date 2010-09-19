@@ -2,6 +2,8 @@ package com.sokolenko.jcrconsole.client.view;
 
 import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.data.Loader;
+import com.extjs.gxt.ui.client.data.ModelIconProvider;
+import com.extjs.gxt.ui.client.data.ModelStringProvider;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Listener;
 import com.extjs.gxt.ui.client.event.SelectionListener;
@@ -18,7 +20,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sokolenko.jcrconsole.client.model.NodeInfoTreeModel;
-import com.sokolenko.jcrconsole.client.model.NodeIntoTreeLabelProvider;
 import com.sokolenko.jcrconsole.client.presenter.NodesTreePresenter;
 import com.sokolenko.jcrconsole.client.util.Assert;
 
@@ -29,6 +30,10 @@ import com.sokolenko.jcrconsole.client.util.Assert;
 public class NodesTreeView extends ContentPanel implements NodesTreePresenter.Display {
     private final ViewResources viewResources;
 
+    private final ModelStringProvider<NodeInfoTreeModel> treeLabelProvider;
+
+    private final ModelIconProvider<NodeInfoTreeModel> treeIconProvider;
+
     private final BeforeLoadListener beforeLoadListener = new BeforeLoadListener();
 
     private final AfterLoadListener afterLoadListener = new AfterLoadListener();
@@ -38,10 +43,13 @@ public class NodesTreeView extends ContentPanel implements NodesTreePresenter.Di
     private ToolBar toolBar;
 
     @Inject
-    public NodesTreeView( ViewResources viewResources ) {
+    public NodesTreeView( ViewResources viewResources, ModelStringProvider<NodeInfoTreeModel> treeLabelProvider,
+                          ModelIconProvider<NodeInfoTreeModel> treeIconProvider ) {
         Assert.notNull( viewResources, "viewResources" );
 
         this.viewResources = viewResources;
+        this.treeLabelProvider = treeLabelProvider;
+        this.treeIconProvider = treeIconProvider;
 
         initializeToolBar();
     }
@@ -57,7 +65,8 @@ public class NodesTreeView extends ContentPanel implements NodesTreePresenter.Di
 
         TreePanel<NodeInfoTreeModel> tree = new TreePanel<NodeInfoTreeModel>( store );
         tree.setDisplayProperty( NodeInfoTreeModel.NODE_NAME );
-        tree.setLabelProvider( new NodeIntoTreeLabelProvider() );
+        tree.setIconProvider( treeIconProvider );
+        tree.setLabelProvider( treeLabelProvider );
         add( tree );
     }
 

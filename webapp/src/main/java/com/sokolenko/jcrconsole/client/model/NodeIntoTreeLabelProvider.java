@@ -1,10 +1,12 @@
 package com.sokolenko.jcrconsole.client.model;
 
 import com.extjs.gxt.ui.client.data.ModelStringProvider;
+import com.google.inject.Singleton;
 
 /**
  * @author Anatoliy Sokolenko
  */
+@Singleton
 public class NodeIntoTreeLabelProvider implements ModelStringProvider<NodeInfoTreeModel> {
     @Override
     public String getStringValue( NodeInfoTreeModel model, String property ) {
@@ -17,11 +19,11 @@ public class NodeIntoTreeLabelProvider implements ModelStringProvider<NodeInfoTr
             long bucketStart = ( Long ) nodesBucketTreeModel.get( NodesBucketTreeModel.BUCKET_START );
             long bucketLength = ( Long ) nodesBucketTreeModel.get( NodesBucketTreeModel.BUCKET_LENGTH );
 
-            long bucketEnd = bucketStart + bucketLength - 1;
+            long bucketEnd = bucketStart + bucketLength;
 
             labelBuilder.append( "children" );
             labelBuilder.append( " " );
-            labelBuilder.append( bucketStart );
+            labelBuilder.append( bucketStart + 1 );
             labelBuilder.append( " \u2014 " );
             labelBuilder.append( bucketEnd );
         } else {
