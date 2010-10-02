@@ -29,6 +29,16 @@
         <url-pattern>/gwt-rpc/*</url-pattern>
     </servlet-mapping>
 
+    <filter>
+        <filter-name>GwtSuppressCacheFilter</filter-name>
+        <filter-class>com.sokolenko.jcrconsole.server.GwtSuppressCacheFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>GwtSuppressCacheFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <session-config>
         <session-timeout>518400</session-timeout>
     </session-config>
