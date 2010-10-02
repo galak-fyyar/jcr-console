@@ -13,7 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Enumeration;
-import java.util.Properties;
+import java.util.NoSuchElementException;
 
 /**
  * @author Anatoliy Sokolenko
@@ -21,8 +21,6 @@ import java.util.Properties;
 @Component
 public class StandardDispatchServlet extends AbstractStandardDispatchServlet implements Controller, InitializingBean {
     private String servletName = null;
-
-    private Properties initParameters = new Properties();
 
     @Autowired
     private Dispatch dispatch;
@@ -48,7 +46,7 @@ public class StandardDispatchServlet extends AbstractStandardDispatchServlet imp
         return dispatch;
     }
 
-    private class ServletConfigStub implements ServletConfig {
+    protected class ServletConfigStub implements ServletConfig {
         public String getServletName() {
             return servletName;
         }
@@ -58,12 +56,21 @@ public class StandardDispatchServlet extends AbstractStandardDispatchServlet imp
         }
 
         public String getInitParameter( String paramName ) {
-            return initParameters.getProperty( paramName );
+            return null;
         }
 
         public Enumeration getInitParameterNames() {
-            return initParameters.keys();
+            return new Enumeration() {
+                @Override
+                public boolean hasMoreElements() {
+                    return false;
+                }
+
+                @Override
+                public Object nextElement() {
+                    throw new NoSuchElementException();
+                }
+            };
         }
     }
-
 }
