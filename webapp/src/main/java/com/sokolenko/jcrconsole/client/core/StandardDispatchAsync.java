@@ -18,6 +18,7 @@ import net.customware.gwt.dispatch.shared.Result;
  * @author David Peterson
  */
 @Singleton
+@Deprecated
 public class StandardDispatchAsync extends AbstractDispatchAsync {
     private final StandardDispatchServiceAsync standardDispatchServiceAsync;
 
@@ -42,4 +43,7 @@ public class StandardDispatchAsync extends AbstractDispatchAsync {
         } );
     }
 
+    protected StandardDispatchServiceAsync getStandardDispatchServiceAsync() {
+        return standardDispatchServiceAsync;
+    }
 }

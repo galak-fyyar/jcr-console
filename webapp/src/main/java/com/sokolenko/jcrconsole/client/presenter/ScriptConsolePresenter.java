@@ -9,7 +9,7 @@ import com.google.inject.Singleton;
 import com.sokolenko.jcrconsole.client.core.DataLoadingPresenter;
 import com.sokolenko.jcrconsole.client.core.SingletonActionWrapper;
 import com.sokolenko.jcrconsole.client.event.ExecuteScriptEvent;
-import com.sokolenko.jcrconsole.client.util.StringUtils;
+import com.sokolenko.jcrconsole.client.util.RandomStringUtils;
 import com.sokolenko.jcrconsole.shared.protocol.ScriptExecuteAction;
 import com.sokolenko.jcrconsole.shared.protocol.ScriptExecuteResult;
 import net.customware.gwt.dispatch.client.DispatchAsync;
@@ -24,7 +24,7 @@ import net.customware.gwt.presenter.client.widget.WidgetDisplay;
 @Singleton
 public class ScriptConsolePresenter extends DataLoadingPresenter<ScriptConsolePresenter.Display>
         implements Listener<ExecuteScriptEvent> {
-    protected static final String SCRIPT_EXECUTE_SPACE = StringUtils.random( 10 );
+    protected static final String SCRIPT_EXECUTE_SPACE = RandomStringUtils.random( 10 );
 
     @Inject
     public ScriptConsolePresenter( Display display, EventBus eventBus, DispatchAsync dispatchAsync ) {
