@@ -9,11 +9,9 @@ import net.customware.gwt.dispatch.server.ExecutionContext;
 import net.customware.gwt.dispatch.shared.Action;
 import net.customware.gwt.dispatch.shared.DispatchException;
 import net.customware.gwt.dispatch.shared.Result;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
 import java.util.Map;
 
@@ -22,8 +20,7 @@ import java.util.Map;
  */
 @Component
 @Scope( "request" )
-public class ButchActionHandler extends AbstractActionHandler<ButchAction, ButchResult>
-        implements InitializingBean {
+public class ButchActionHandler extends AbstractActionHandler<ButchAction, ButchResult> {
     @Autowired
     private Dispatch dispatch;
 
@@ -55,10 +52,5 @@ public class ButchActionHandler extends AbstractActionHandler<ButchAction, Butch
     @Override
     public void rollback( ButchAction action, ButchResult result, ExecutionContext context ) throws DispatchException {
 
-    }
-
-    @Override
-    public void afterPropertiesSet() throws Exception {
-        Assert.state( dispatch != null );
     }
 }
