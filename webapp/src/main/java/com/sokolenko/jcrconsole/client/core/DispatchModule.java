@@ -13,23 +13,23 @@ import net.customware.gwt.dispatch.client.standard.StandardDispatchServiceAsync;
  * For simple cases, just add this as a \@GinModule in your {@link com.google.gwt.inject.client.Ginjector} instance.
  * <p/>
  * If you want to provide a custom {@link net.customware.gwt.dispatch.client.ExceptionHandler} just call
- * <code>install( new StandardDispatchModule( MyExceptionHandler.class )</code>
+ * <code>install( new DispatchModule( MyExceptionHandler.class )</code>
  * in another module.
  *
  * @author David Peterson
  */
-public class StandardDispatchModule extends AbstractDispatchModule {
+public class DispatchModule extends AbstractDispatchModule {
 
     /**
      * Constructs a new GIN configuration module that sets up a {@link net.customware.gwt.dispatch.client.DispatchAsync}
      * implementation, using the {@link net.customware.gwt.dispatch.client.DefaultExceptionHandler}.
      */
-    public StandardDispatchModule() {
+    public DispatchModule() {
         this( DefaultExceptionHandler.class );
     }
 
 
-    public StandardDispatchModule( Class<? extends ExceptionHandler> exceptionHandlerType ) {
+    public DispatchModule( Class<? extends ExceptionHandler> exceptionHandlerType ) {
         super( exceptionHandlerType );
     }
 
@@ -37,7 +37,7 @@ public class StandardDispatchModule extends AbstractDispatchModule {
     @Singleton
     protected DispatchAsync provideDispatchAsync( StandardDispatchServiceAsync standardDispatchServiceAsync,
                                                   ExceptionHandler exceptionHandler ) {
-        return new StandardDispatchAsync( standardDispatchServiceAsync, exceptionHandler );
+        return new ButchDispatchAsync( standardDispatchServiceAsync, exceptionHandler );
     }
 
 }

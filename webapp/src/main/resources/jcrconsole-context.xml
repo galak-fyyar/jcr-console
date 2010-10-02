@@ -21,12 +21,14 @@
     <util:properties id="jcrConsoleProperties" location="classpath:jcrconsole.properties"/>
 
     <util:set id="actionHandlers">
+        <ref bean="butchActionHandler"/>
+
         <ref bean="getNodesActionHandler"/>
         <ref bean="getNodeDataActionHandler"/>
         <ref bean="groovyScriptActionHandler"/>
     </util:set>
 
-    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping" lazy-init="false">
         <property name="alwaysUseFullPath" value="true"/>
         <property name="mappings">
             <value>
@@ -35,11 +37,12 @@
         </property>
     </bean>
 
-    <bean id="gwtDispatchServlet" class="net.customware.gwt.dispatch.server.spring.SpringStandardDispatchServlet">
+    <bean id="gwtDispatchServlet" class="net.customware.gwt.dispatch.server.spring.SpringStandardDispatchServlet"
+          lazy-init="false">
         <property name="dispatch" ref="gwtDispatch"/>
     </bean>
 
-    <bean id="gwtDispatch" class="net.customware.gwt.dispatch.server.spring.SpringDispatch"/>
+    <bean id="gwtDispatch" class="net.customware.gwt.dispatch.server.spring.SpringDispatch" lazy-init="false"/>
 
     <bean class="org.springmodules.jcr.jackrabbit.RepositoryFactoryBean">
         <property name="configuration" value="/WEB-INF/repository/repository.xml"/>
