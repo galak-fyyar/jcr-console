@@ -21,6 +21,23 @@
         </developer>
     </developers>
 
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git:git@github.com:galak/jcr-console.git</connection>
+        <url>http://github.com/galak/jcr-console/tree/</url>
+    </scm>
+
+    <issueManagement>
+        <system>github</system>
+        <url>http://github.com/galak/jcr-console/issues</url>
+    </issueManagement>
+
     <properties>
         <!-- Name of environment and build configuration respectively -->
         <env>default</env>
