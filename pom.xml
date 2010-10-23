@@ -323,6 +323,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.jackrabbit</groupId>
+                <artifactId>jackrabbit-jcr-rmi</artifactId>
+                <version>${jackrabbit.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.springmodules</groupId>
                 <artifactId>spring-modules-jcr</artifactId>
                 <version>0.8a</version>
