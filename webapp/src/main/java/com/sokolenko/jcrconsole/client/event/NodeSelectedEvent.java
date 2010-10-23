@@ -22,10 +22,6 @@ public class NodeSelectedEvent extends GwtEvent<NodeSelectedHandler> {
 
     @Override
     protected void dispatch( NodeSelectedHandler handler ) {
-        if ( !isLive() ) {
-            return;
-        }
-
         handler.nodeSelected( nodeInfo );
     }
 }
