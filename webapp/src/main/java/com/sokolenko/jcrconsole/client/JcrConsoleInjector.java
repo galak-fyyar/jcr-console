@@ -4,6 +4,7 @@ import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 import com.sokolenko.jcrconsole.client.core.DispatchModule;
 import com.sokolenko.jcrconsole.client.presenter.MainPresenter;
+import com.sokolenko.jcrconsole.client.presenter.NodeDataPresenter;
 import net.customware.gwt.dispatch.client.standard.StandardDispatchServiceAsync;
 
 /**
@@ -14,4 +15,6 @@ public interface JcrConsoleInjector extends Ginjector {
     MainPresenter getMainPresenter();
 
     StandardDispatchServiceAsync getStandardDispatchService();
+
+    NodeDataPresenter createNodeDataPresenter();
 }

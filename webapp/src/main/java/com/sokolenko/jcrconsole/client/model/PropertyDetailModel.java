@@ -13,4 +13,7 @@ public class PropertyDetailModel extends BaseModelData {
     public static final String IS_MULTIPLE = "isMultiple";
 
     public static final String PROPERTY_VALUE = "value";
+
+    public PropertyDetailModel(  ) {
+    }
 }

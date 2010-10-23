@@ -1,12 +1,18 @@
 package com.sokolenko.jcrconsole.client.view;
 
+import com.extjs.gxt.ui.client.data.DataProxy;
 import com.extjs.gxt.ui.client.data.LoadEvent;
 import com.extjs.gxt.ui.client.data.Loader;
+import com.extjs.gxt.ui.client.data.ModelData;
 import com.extjs.gxt.ui.client.data.ModelIconProvider;
 import com.extjs.gxt.ui.client.data.ModelStringProvider;
+import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
 import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.Observable;
 import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.event.SelectionProvider;
+import com.extjs.gxt.ui.client.event.TreePanelEvent;
 import com.extjs.gxt.ui.client.store.TreeStore;
 import com.extjs.gxt.ui.client.widget.Component;
 import com.extjs.gxt.ui.client.widget.ContentPanel;
@@ -14,14 +20,17 @@ import com.extjs.gxt.ui.client.widget.button.Button;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
 import com.extjs.gxt.ui.client.widget.treepanel.TreePanel;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sokolenko.jcrconsole.client.model.NodeInfoTreeModel;
+import com.sokolenko.jcrconsole.client.presenter.NodesTreeLoader;
 import com.sokolenko.jcrconsole.client.presenter.NodesTreePresenter;
 import com.sokolenko.jcrconsole.client.util.Assert;
+import com.sokolenko.jcrconsole.client.util.DataProxyWrapper;
+
+import java.util.List;
 
 /**
  * @author Anatoliy Sokolenko
@@ -34,13 +43,14 @@ public class NodesTreeView extends ContentPanel implements NodesTreePresenter.Di
 
     private final ModelIconProvider<NodeInfoTreeModel> treeIconProvider;
 
-    private final BeforeLoadListener beforeLoadListener = new BeforeLoadListener();
+    private TreeLoader<NodeInfoTreeModel> loader;
 
-    private final AfterLoadListener afterLoadListener = new AfterLoadListener();
+    private final DataProxyWrapper<List<NodeInfoTreeModel>> dataProxyWrapper = new DataProxyWrapper<List<NodeInfoTreeModel>>();
 
-    private TreeStore<NodeInfoTreeModel> store;
+    private TreePanel<NodeInfoTreeModel> tree;
 
     private ToolBar toolBar;
+
 
     @Inject
     public NodesTreeView( ViewResources viewResources, ModelStringProvider<NodeInfoTreeModel> treeLabelProvider,
@@ -51,23 +61,12 @@ public class NodesTreeView extends ContentPanel implements NodesTreePresenter.Di
         this.treeLabelProvider = treeLabelProvider;
         this.treeIconProvider = treeIconProvider;
 
-        initializeToolBar();
-    }
-
-    @Override
-    protected void onRender( Element parent, int pos ) {
-        Assert.notNullState( store, "store" );
-
-        super.onRender( parent, pos );
-
         setHeading( "Workspace Data" );
         setLayout( new FitLayout() );
 
-        TreePanel<NodeInfoTreeModel> tree = new TreePanel<NodeInfoTreeModel>( store );
-        tree.setDisplayProperty( NodeInfoTreeModel.NODE_NAME );
-        tree.setIconProvider( treeIconProvider );
-        tree.setLabelProvider( treeLabelProvider );
-        add( tree );
+        initializeToolBar();
+
+        initializeTreePanel();
     }
 
     protected void initializeToolBar() {
@@ -83,24 +82,43 @@ public class NodesTreeView extends ContentPanel implements NodesTreePresenter.Di
         setTopComponent( toolBar );
     }
 
-    public TreeStore<NodeInfoTreeModel> getStore() {
-        return store;
+    protected void initializeTreePanel() {
+        loader = new NodesTreeLoader( dataProxyWrapper );
+
+        AfterLoadListener afterLoadListener = new AfterLoadListener();
+
+        loader.addListener( Loader.BeforeLoad, new BeforeLoadListener() );
+        loader.addListener( Loader.Load, afterLoadListener );
+        loader.addListener( Loader.LoadException, afterLoadListener );
+
+        TreeStore<NodeInfoTreeModel> store = new TreeStore<NodeInfoTreeModel>( loader );
+
+        tree = new NotExpandableTreePanel<NodeInfoTreeModel>( store );
+        tree.setDisplayProperty( NodeInfoTreeModel.NODE_NAME );
+        tree.setIconProvider( treeIconProvider );
+        tree.setLabelProvider( treeLabelProvider );
+
+        add( tree );
     }
 
-    public void setStore( TreeStore<NodeInfoTreeModel> store ) {
-        if ( this.store != null ) {
-            this.store.getLoader().removeListener( Loader.BeforeLoad, beforeLoadListener );
-            this.store.getLoader().removeListener( Loader.Load, afterLoadListener );
-            this.store.getLoader().removeListener( Loader.LoadException, afterLoadListener );
-        }
+    @Override
+    public SelectionProvider<NodeInfoTreeModel> getTreeSelectionProvider() {
+        return tree.getSelectionModel();
+    }
 
-        this.store = store;
+    @Override
+    public void setDataProxy( DataProxy<List<NodeInfoTreeModel>> dataProxy ) {
+        dataProxyWrapper.setDataProxy( dataProxy );
+    }
 
-        if ( this.store != null ) {
-            this.store.getLoader().addListener( Loader.BeforeLoad, beforeLoadListener );
-            this.store.getLoader().addListener( Loader.Load, afterLoadListener );
-            this.store.getLoader().addListener( Loader.LoadException, afterLoadListener );
-        }
+    @Override
+    public DataProxy<List<NodeInfoTreeModel>> getDataProxy() {
+        return dataProxyWrapper.getDataProxy();
+    }
+
+    @Override
+    public Observable getTreeObservable() {
+        return tree;
     }
 
     @Override
@@ -121,9 +139,7 @@ public class NodesTreeView extends ContentPanel implements NodesTreePresenter.Di
     protected class RefreshButtonListener extends SelectionListener<ButtonEvent> {
         @Override
         public void componentSelected( ButtonEvent ce ) {
-            if ( store != null ) {
-                store.getLoader().load();
-            }
+            loader.load();
         }
     }
 
@@ -146,6 +162,23 @@ public class NodesTreeView extends ContentPanel implements NodesTreePresenter.Di
                     item.setEnabled( true );
                 }
             }
+        }
+    }
+
+    protected class NotExpandableTreePanel<M extends ModelData> extends TreePanel<M> {
+
+        /**
+         * Creates a new tree panel.
+         *
+         * @param treeStore the tree store
+         */
+        public NotExpandableTreePanel( TreeStore treeStore ) {
+            super( treeStore );
+        }
+
+        @Override
+        protected void onDoubleClick( TreePanelEvent tpe ) {
+            //do not use double click for expand
         }
     }
 }

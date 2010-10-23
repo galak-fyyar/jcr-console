@@ -24,4 +24,10 @@ public abstract class Assert {
             throw new IllegalArgumentException( "Attribute " + parameter + " should be specified" );
         }
     }
+
+    public static void isTrue( boolean b, String explanation ) {
+        if ( !b ) {
+            throw new IllegalArgumentException( explanation );
+        }
+    }
 }

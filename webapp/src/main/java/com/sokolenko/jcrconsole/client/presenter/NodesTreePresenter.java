@@ -1,13 +1,17 @@
 package com.sokolenko.jcrconsole.client.presenter;
 
-import com.extjs.gxt.ui.client.data.BaseTreeLoader;
 import com.extjs.gxt.ui.client.data.DataProxy;
 import com.extjs.gxt.ui.client.data.RpcProxy;
-import com.extjs.gxt.ui.client.store.TreeStore;
+import com.extjs.gxt.ui.client.event.Events;
+import com.extjs.gxt.ui.client.event.Listener;
+import com.extjs.gxt.ui.client.event.Observable;
+import com.extjs.gxt.ui.client.event.SelectionProvider;
+import com.extjs.gxt.ui.client.event.TreePanelEvent;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import com.sokolenko.jcrconsole.client.event.NodeSelectedEvent;
 import com.sokolenko.jcrconsole.client.model.NodeInfoTreeModel;
 import com.sokolenko.jcrconsole.client.model.NodesBucketTreeModel;
 import com.sokolenko.jcrconsole.client.util.Assert;
@@ -19,7 +23,6 @@ import net.customware.gwt.presenter.client.EventBus;
 import net.customware.gwt.presenter.client.place.Place;
 import net.customware.gwt.presenter.client.place.PlaceRequest;
 import net.customware.gwt.presenter.client.widget.WidgetDisplay;
-import net.customware.gwt.presenter.client.widget.WidgetPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +31,7 @@ import java.util.List;
  * @author Anatoliy Sokolenko
  */
 @Singleton
-public class NodesTreePresenter extends WidgetPresenter<NodesTreePresenter.Display> {
+public class NodesTreePresenter extends DataLoadingPresenter<NodesTreePresenter.Display> {
     private final DispatchAsync dispatchAsync;
 
     @Inject
@@ -37,7 +40,7 @@ public class NodesTreePresenter extends WidgetPresenter<NodesTreePresenter.Displ
 
     @Inject
     public NodesTreePresenter( Display display, EventBus eventBus, DispatchAsync dispatchAsync ) {
-        super( display, eventBus );
+        super( display, eventBus, dispatchAsync );
 
         Assert.notNull( dispatchAsync, "dispatchAsync" );
 
@@ -49,12 +52,29 @@ public class NodesTreePresenter extends WidgetPresenter<NodesTreePresenter.Displ
     @Override
     protected void onBind() {
         NodesTreeRpcProxy rpcProxy = new NodesTreeRpcProxy();
+        getDisplay().setDataProxy( rpcProxy );
 
-        NodesTreeLoader loader = new NodesTreeLoader( rpcProxy );
+        getDisplay().getTreeObservable().addListener( Events.OnDoubleClick, new Listener<TreePanelEvent<NodeInfoTreeModel>>() {
+            @Override
+            public void handleEvent( TreePanelEvent<NodeInfoTreeModel> be ) {
+                NodeInfoTreeModel selectedItem = be.getItem();
 
-        TreeStore<NodeInfoTreeModel> store = new TreeStore<NodeInfoTreeModel>( loader );
+                if ( selectedItem != null ) {
+                    NodeInfo nodeInfo = selectedItem.get( NodeInfoTreeModel.NODE_INFO_INSTANCE );
+                    eventBus.fireEvent( new NodeSelectedEvent( nodeInfo ) );
+                }
+            }
+        } );
+    }
 
-        getDisplay().setStore( store );
+    protected static boolean isEqual( List<NodeInfoTreeModel> a, List<NodeInfoTreeModel> b ) {
+        if ( a == b ) {
+            return true;
+        } else if ( a == null || b == null ) {
+            return false;
+        } else {
+            return a.equals( b );
+        }
     }
 
     @Override
@@ -114,38 +134,13 @@ public class NodesTreePresenter extends WidgetPresenter<NodesTreePresenter.Displ
     }
 
     public static interface Display extends WidgetDisplay {
-        public TreeStore<NodeInfoTreeModel> getStore();
+        SelectionProvider<NodeInfoTreeModel> getTreeSelectionProvider();
 
-        public void setStore( TreeStore<NodeInfoTreeModel> store );
+        void setDataProxy( DataProxy<List<NodeInfoTreeModel>> dataProxy );
 
-    }
+        DataProxy<List<NodeInfoTreeModel>> getDataProxy();
 
-    protected class NodesTreeLoader extends BaseTreeLoader<NodeInfoTreeModel> {
-        public NodesTreeLoader( DataProxy proxy ) {
-            super( proxy );
-        }
-
-        @Override
-        protected void loadData( Object config ) {
-            if ( config instanceof NodeInfoTreeModel ) {
-                NodeInfoTreeModel nodeInfoTreeModel = ( NodeInfoTreeModel ) config;
-                List children = nodeInfoTreeModel.getChildren();
-
-                if ( children.size() > 0 ) {
-                    onLoadSuccess( config, children );
-                    return;
-                }
-            }
-
-            super.loadData( config );
-        }
-
-        @Override
-        public boolean hasChildren( NodeInfoTreeModel parent ) {
-            long totalChildrenCount = ( Long ) parent.get( NodeInfoTreeModel.TOTAL_CHILDREN_COUNT );
-
-            return totalChildrenCount > 0;
-        }
+        Observable getTreeObservable();
     }
 
     protected class NodesTreeRpcProxy extends RpcProxy<List<NodeInfoTreeModel>> {

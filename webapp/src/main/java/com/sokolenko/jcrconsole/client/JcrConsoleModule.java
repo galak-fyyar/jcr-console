@@ -1,7 +1,9 @@
 package com.sokolenko.jcrconsole.client;
 
+import com.extjs.gxt.ui.client.data.DataProxy;
 import com.extjs.gxt.ui.client.data.ModelIconProvider;
 import com.extjs.gxt.ui.client.data.ModelStringProvider;
+import com.extjs.gxt.ui.client.data.TreeLoader;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Names;
@@ -9,10 +11,13 @@ import com.sokolenko.jcrconsole.client.model.NodeInfoTreeModel;
 import com.sokolenko.jcrconsole.client.model.NodeInfoTreeModelIconProvider;
 import com.sokolenko.jcrconsole.client.model.NodeIntoTreeLabelProvider;
 import com.sokolenko.jcrconsole.client.presenter.MainPresenter;
+import com.sokolenko.jcrconsole.client.presenter.NodeDataPresenter;
 import com.sokolenko.jcrconsole.client.presenter.NodeDetailsPresenter;
+import com.sokolenko.jcrconsole.client.presenter.NodesTreeLoader;
 import com.sokolenko.jcrconsole.client.presenter.NodesTreePresenter;
 import com.sokolenko.jcrconsole.client.presenter.ScriptConsolePresenter;
 import com.sokolenko.jcrconsole.client.view.MainView;
+import com.sokolenko.jcrconsole.client.view.NodeDataView;
 import com.sokolenko.jcrconsole.client.view.NodeDetailsView;
 import com.sokolenko.jcrconsole.client.view.NodesTreeView;
 import com.sokolenko.jcrconsole.client.view.ScriptConsoleView;
@@ -33,6 +38,7 @@ public class JcrConsoleModule extends AbstractPresenterModule {
         bindPresenter( MainPresenter.class, MainPresenter.Display.class, MainView.class );
         bindPresenter( NodesTreePresenter.class, NodesTreePresenter.Display.class, NodesTreeView.class );
         bindPresenter( NodeDetailsPresenter.class, NodeDetailsPresenter.Display.class, NodeDetailsView.class );
+        bindPresenter( NodeDataPresenter.class, NodeDataPresenter.Display.class, NodeDataView.class );
         bindPresenter( ScriptConsolePresenter.class, ScriptConsolePresenter.Display.class, ScriptConsoleView.class );
 
         bind( new TypeLiteral<ModelStringProvider<NodeInfoTreeModel>>() {
