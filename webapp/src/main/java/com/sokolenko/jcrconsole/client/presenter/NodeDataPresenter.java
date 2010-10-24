@@ -1,6 +1,5 @@
 package com.sokolenko.jcrconsole.client.presenter;
 
-import com.extjs.gxt.ui.client.data.ModelData;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.sokolenko.jcrconsole.client.core.DataLoadingPresenter;
@@ -9,12 +8,14 @@ import com.sokolenko.jcrconsole.shared.protocol.GetNodeDataAction;
 import com.sokolenko.jcrconsole.shared.protocol.GetNodeDataResult;
 import com.sokolenko.jcrconsole.shared.protocol.NodeData;
 import com.sokolenko.jcrconsole.shared.protocol.NodeInfo;
+import com.sokolenko.jcrconsole.shared.protocol.PropertyData;
 import net.customware.gwt.dispatch.client.DispatchAsync;
 import net.customware.gwt.presenter.client.EventBus;
 import net.customware.gwt.presenter.client.place.Place;
 import net.customware.gwt.presenter.client.place.PlaceRequest;
 import net.customware.gwt.presenter.client.widget.WidgetDisplay;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,7 +73,29 @@ public class NodeDataPresenter extends DataLoadingPresenter<NodeDataPresenter.Di
 
 
     protected void setNodeData( NodeData nodeData ) {
+        List<PropertyDetailModel> propertyDetailModels = new ArrayList<PropertyDetailModel>();
+
+        if ( nodeData != null ) {
+
+            List<PropertyData> propertyDatas = nodeData.getPropertyDatas();
+            if ( propertyDatas != null ) {
+                for ( PropertyData propertyData : propertyDatas ) {
+                    propertyDetailModels.add( buildPropertyDetailModel( propertyData ) );
+                }
+            }
+        }
+
+        getDisplay().setPropertiesModels( propertyDetailModels );
+    }
+
+    protected PropertyDetailModel buildPropertyDetailModel( PropertyData propertyData ) {
+        PropertyDetailModel result = new PropertyDetailModel();
+        result.set( PropertyDetailModel.PROPERTY_NAME, propertyData.getName() );
+        result.set( PropertyDetailModel.PROPERTY_VALUE, propertyData.getValues().size() > 0 ? propertyData.getValues().get( 0 ) : null );
+
         //TODO
+
+        return result;
     }
 
     public static interface Display extends WidgetDisplay {

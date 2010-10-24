@@ -1,10 +1,13 @@
 package com.sokolenko.jcrconsole.client.view;
 
+import com.extjs.gxt.ui.client.Style;
 import com.extjs.gxt.ui.client.store.GroupingStore;
 import com.extjs.gxt.ui.client.widget.TabItem;
 import com.extjs.gxt.ui.client.widget.grid.ColumnConfig;
 import com.extjs.gxt.ui.client.widget.grid.ColumnModel;
 import com.extjs.gxt.ui.client.widget.grid.Grid;
+import com.extjs.gxt.ui.client.widget.layout.RowData;
+import com.extjs.gxt.ui.client.widget.layout.RowLayout;
 import com.google.gwt.user.client.ui.Widget;
 import com.sokolenko.jcrconsole.client.model.PropertyDetailModel;
 import com.sokolenko.jcrconsole.client.presenter.NodeDataPresenter;
@@ -25,6 +28,10 @@ public class NodeDataView extends TabItem implements NodeDataPresenter.Display {
     public NodeDataView() {
         setClosable( true );
 
+        RowLayout layout = new RowLayout();
+        layout.setOrientation( Style.Orientation.VERTICAL );
+        setLayout( layout );
+
         store = new GroupingStore<PropertyDetailModel>();
         store.groupBy( PropertyDetailModel.PROPERTY_NAME );
 
@@ -33,10 +40,12 @@ public class NodeDataView extends TabItem implements NodeDataPresenter.Display {
 
         columnConfig = new ColumnConfig();
         columnConfig.setId( PropertyDetailModel.PROPERTY_NAME );
+        columnConfig.setWidth( 300 );
         columnConfigs.add( columnConfig );
 
         columnConfig = new ColumnConfig();
         columnConfig.setId( PropertyDetailModel.PROPERTY_VALUE );
+        columnConfig.setWidth( 300 );
         columnConfigs.add( columnConfig );
 
         ColumnModel columnModel = new ColumnModel( columnConfigs );
@@ -46,9 +55,10 @@ public class NodeDataView extends TabItem implements NodeDataPresenter.Display {
         gridView.setEnableGroupingMenu( false );
 
         grid = new Grid<PropertyDetailModel>( store, columnModel );
+        grid.setAutoExpandColumn( PropertyDetailModel.PROPERTY_VALUE );
         grid.setHideHeaders( true );
 
-        add( grid );
+        add( grid, new RowData( 1, 1 ) );
     }
 
     @Override
