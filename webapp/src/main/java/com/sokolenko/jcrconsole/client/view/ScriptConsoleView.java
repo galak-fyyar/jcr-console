@@ -20,6 +20,7 @@ import com.extjs.gxt.ui.client.widget.layout.BorderLayout;
 import com.extjs.gxt.ui.client.widget.layout.BorderLayoutData;
 import com.extjs.gxt.ui.client.widget.layout.FitLayout;
 import com.extjs.gxt.ui.client.widget.toolbar.ToolBar;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.gwt.user.client.ui.Widget;
@@ -36,6 +37,8 @@ public class ScriptConsoleView extends ContentPanel implements ScriptConsolePres
     protected static final String OUTPUT_TEXT_FONT_FAMILY = "tahoma,arial,verdana,sans-serif";
 
     protected static final String OUTPUT_TEXT_FONT_SIZE = "12px";
+
+    protected static final String SCRIPT_TEXT_AREA_ID = "script-text-area";
 
     private final Observable observable = new BaseObservable();
 
@@ -68,6 +71,7 @@ public class ScriptConsoleView extends ContentPanel implements ScriptConsolePres
         BorderLayoutData layoutData;
 
         scriptTextArea = new TextArea();
+        scriptTextArea.setId( SCRIPT_TEXT_AREA_ID );
         scriptTextArea.setHideLabel( true );
         scriptTextArea.addKeyListener( new KeyListener() {
             @Override
@@ -83,6 +87,8 @@ public class ScriptConsoleView extends ContentPanel implements ScriptConsolePres
             @Override
             public void handleEvent( ComponentEvent be ) {
                 scriptTextArea.el().firstChild().setStyleAttribute( "padding", "5px" );
+
+                bindScriptHighlighting( SCRIPT_TEXT_AREA_ID, GWT.getModuleBaseURL() + "../assets/codemirror/" );
             }
         } );
 
@@ -149,4 +155,19 @@ public class ScriptConsoleView extends ContentPanel implements ScriptConsolePres
     public Observable getViewObservable() {
         return observable;
     }
+
+    private native static void bindScriptHighlighting( String elementId, String codeMirrorLocation ) /*-{
+        if ( $wnd.CodeMirror ) {
+            var editor = $wnd.CodeMirror.fromTextArea( elementId, {
+                height: "450px",
+                parserfile: [
+                    codeMirrorLocation + "groovy/js/parsegroovy.js",
+                    codeMirrorLocation + "groovy/js/tokenizegroovy.js"
+                ],
+                stylesheet: codeMirrorLocation + "groovy/css/groovycolors.css",
+                path: codeMirrorLocation + "core/js/",
+                textWrapping: false
+            });
+        }
+    }-*/;
 }

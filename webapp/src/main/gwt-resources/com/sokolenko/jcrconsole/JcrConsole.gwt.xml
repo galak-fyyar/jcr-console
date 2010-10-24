@@ -23,7 +23,9 @@
     <set-property name="log_SystemLogger" value="ENABLED"/>
 
     <set-property name="user.agent" value="${user.agent}"/>
-    
+
+    <script src="../assets/codemirror/core/js/codemirror.js"/>
+
     <entry-point class="com.sokolenko.jcrconsole.client.JcrConsoleEntryPoint"/>
 
     <source path="client"/>
